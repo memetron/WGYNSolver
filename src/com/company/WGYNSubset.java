@@ -11,7 +11,7 @@ public class WGYNSubset {
     private SolutionSet[] solutions = new SolutionSet[100];
     private String[] operations;
 
-    public WGYNSubset(int[] set, String[] operations) {
+    private WGYNSubset(int[] set, String[] operations) {
         for (int i = 0; i < 100; i++) {
             solutions[i] = new SolutionSet(i + 1);
         }
@@ -23,11 +23,11 @@ public class WGYNSubset {
         solve();
     }
 
-    public WGYNSubset(int[] set, boolean canConcat, boolean dummySet) {
+    private WGYNSubset(int[] set, boolean canConcat, boolean dummySet) {
         this.set = set;
     }
 
-    public WGYNSubset(int[] set, boolean canConcat) {
+    WGYNSubset(int[] set, boolean canConcat) {
         for (int i = 0; i < 100; i++) {
             solutions[i] = new SolutionSet(i + 1);
         }
@@ -46,7 +46,7 @@ public class WGYNSubset {
         solve();
     }
 
-    void solve() {
+    private void solve() {
         if (set.length == 1) {
             if (set[0] > 0 && set[0] <= 100) {
                 this.solutions[set[0] - 1].append(new Solution(this.set[0], this.operations[0]));
@@ -92,18 +92,18 @@ public class WGYNSubset {
                         s[0] = sol.value();
                         System.arraycopy(other, 0, s, 1, other.length);
                         format[0] = sol.toString();
-                        if (!Arrays.stream(subSets)
-                                .anyMatch(new WGYNSubset(s, false, true)::equals)) {
+                        if (Arrays.stream(subSets)
+                                .noneMatch(new WGYNSubset(s, false, true)::equals)) {
                             appendSet(new WGYNSubset(s, format));
-                            if (s.length==1 && s[0] == 3) {
+                            if (s.length == 1 && s[0] == 3) {
                                 int[] endFactoral = {3};
-                                String[] endFactorialFormat = {format[0]+"!"};
-                                appendSet(new WGYNSubset(endFactoral,endFactorialFormat));
+                                String[] endFactorialFormat = {format[0] + "!"};
+                                appendSet(new WGYNSubset(endFactoral, endFactorialFormat));
                             }
-                            if (s.length==1 && s[0] == 4) {
+                            if (s.length == 1 && s[0] == 4) {
                                 int[] endFactoral = {24};
-                                String[] endFactorialFormat = {format[0]+"!"};
-                                appendSet(new WGYNSubset(endFactoral,endFactorialFormat));
+                                String[] endFactorialFormat = {format[0] + "!"};
+                                appendSet(new WGYNSubset(endFactoral, endFactorialFormat));
                             }
                         }
                     }
@@ -111,7 +111,6 @@ public class WGYNSubset {
             }
         }
         for (int i = 0; i < set.length; i++) {
-            String log = operations[i] + set[i];
             if (((set[i] > 2 && set[i] < 10) || (set[i] == 0)) &&
                     (operations[i].length() < 2 || !this.operations[i].substring(operations[i].length() - 1).equals("!"))) {
                 int[] newSubset = Arrays.copyOf(set, set.length);
@@ -175,8 +174,8 @@ public class WGYNSubset {
                 intlog(a, b) == Integer.MIN_VALUE ? null : new Solution(intlog(a, b), "(log_" + formatA + "(" + formatB + "))")};
     }
 
-    public void appendSet(WGYNSubset s) {
-        if (Arrays.stream(subSets).anyMatch(s::equals)) return;
+    private void appendSet(WGYNSubset s) {
+        if (Arrays.asList(subSets).contains(s)) return;
         numSubsets++;
         if (numSubsets >= subSets.length) {
             WGYNSubset[] clone = new WGYNSubset[subSets.length * 2];
@@ -193,11 +192,8 @@ public class WGYNSubset {
             return false;
         }
         WGYNSubset s = (WGYNSubset) o;
-        if ((new HashSet<Integer>(Arrays.stream(set).boxed().collect(Collectors.toList()))).equals(
-                new HashSet<Integer>(Arrays.stream(s.set).boxed().collect(Collectors.toList())))) {
-            return true;
-        }
-        return false;
+        return ((new HashSet<>(Arrays.stream(set).boxed().collect(Collectors.toList()))).equals(
+                new HashSet<>(Arrays.stream(s.set).boxed().collect(Collectors.toList()))));
     }
 
     @Override
@@ -209,25 +205,19 @@ public class WGYNSubset {
         return s.substring(0, s.length() - 2);
     }
 
-    public void printPossible() {
+    void printPossible() {
         int count = 0;
         for (int i = 0; i < 100; i++) {
             if (solutions[i] != null) {
                 System.out.println(i + 1 + " - " + solutions[i].getNumSolutions());
-                if(solutions[i].getNumSolutions()>0) count++;
+                if (solutions[i].getNumSolutions() > 0) count++;
             }
         }
-        System.out.println("Found: "+count+"/100");
+        System.out.println("Found: " + count + "/100");
     }
 
-    public void printSolutions(int n) {
+    void printSolutions(int n) {
         solutions[n - 1].printSolutions(20);
-    }
-
-    public void printSubsets() {
-        for (int i = 0; i < numSubsets; i++) {
-            System.out.println(subSets[i].toString());
-        }
     }
 
     public static void main(String[] args) {
