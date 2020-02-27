@@ -1,7 +1,5 @@
 package com.company;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.stream.Collectors;
@@ -13,7 +11,7 @@ public class WGYNSubset {
     private SolutionSet[] solutions = new SolutionSet[100];
     private String[] operations;
 
-    public WGYNSubset(@NotNull int[] set, String[] operations) {
+    public WGYNSubset(int[] set, String[] operations) {
         for (int i = 0; i < 100; i++) {
             solutions[i] = new SolutionSet(i + 1);
         }
@@ -29,7 +27,7 @@ public class WGYNSubset {
         this.set = set;
     }
 
-    public WGYNSubset(@NotNull int[] set, boolean canConcat) {
+    public WGYNSubset(int[] set, boolean canConcat) {
         for (int i = 0; i < 100; i++) {
             solutions[i] = new SolutionSet(i + 1);
         }

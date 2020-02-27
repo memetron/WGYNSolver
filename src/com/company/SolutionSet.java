@@ -1,8 +1,5 @@
 package com.company;
 
-import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.NotNull;
-
 import java.util.Arrays;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.ArrayList;
@@ -13,7 +10,6 @@ public class SolutionSet {
     private int numSolutions = 0;
     private int n;
 
-    @Contract(pure = true)
     public SolutionSet(int n) {
         this.n = n;
     }
@@ -37,7 +33,7 @@ public class SolutionSet {
         set[numSolutions - 1] = s;
     }
 
-    public void merge(@NotNull SolutionSet s) {
+    public void merge(SolutionSet s) {
         for (Solution sol : s.set) {
             if (sol != null) append(sol);
         }
