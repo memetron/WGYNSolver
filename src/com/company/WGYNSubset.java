@@ -1,8 +1,6 @@
 package com.company;
 
 import java.util.Arrays;
-import java.util.HashSet;
-import java.util.stream.Collectors;
 
 public class WGYNSubset {
     private int[] set;
@@ -185,6 +183,16 @@ public class WGYNSubset {
         subSets[numSubsets - 1] = s;
     }
 
+    //    @Override
+//    public boolean equals(Object o) {
+//        if (o == this) return true;
+//        if (!(o instanceof WGYNSubset)) {
+//            return false;
+//        }
+//        WGYNSubset s = (WGYNSubset) o;
+//        return ((new HashSet<>(Arrays.stream(set).boxed().collect(Collectors.toList()))).equals(
+//                new HashSet<>(Arrays.stream(s.set).boxed().collect(Collectors.toList()))));
+//    }
     @Override
     public boolean equals(Object o) {
         if (o == this) return true;
@@ -192,8 +200,11 @@ public class WGYNSubset {
             return false;
         }
         WGYNSubset s = (WGYNSubset) o;
-        return ((new HashSet<>(Arrays.stream(set).boxed().collect(Collectors.toList()))).equals(
-                new HashSet<>(Arrays.stream(s.set).boxed().collect(Collectors.toList()))));
+        int[] sortedSet1 = Arrays.copyOf(set, set.length);
+        int[] sortedSet2 = Arrays.copyOf(s.set, s.set.length);
+        Arrays.sort(sortedSet1);
+        Arrays.sort(sortedSet2);
+        return (Arrays.equals(sortedSet1, sortedSet2));
     }
 
     @Override
