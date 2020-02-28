@@ -1,9 +1,9 @@
 package com.company;
 
-
-public class Solution {
-    private final int n;
-    private final String format;
+class Solution implements Comparable<Solution> {
+    //An object that contains an integer value and a string representing the mathematical expression to get that value
+    private int n;
+    private String format;
 
     Solution(int n, String format) {
         this.n = n;
@@ -19,8 +19,16 @@ public class Solution {
         return n;
     }
 
-    public String getFormat() {
+    String getFormat() {
         return format;
+    }
+
+    void setFormat(String format) {
+        this.format = format;
+    }
+
+    void setValue(int value) {
+        this.n = value;
     }
 
     @Override
@@ -30,7 +38,12 @@ public class Solution {
             return false;
         }
         Solution s = (Solution) o;
-
         return s.format.equals(this.format);
+    }
+
+    @Override
+    public int compareTo(Solution s) {
+        if (equals(s)) return 0;
+        return (this.value() > s.value()) ? 1 : -1;
     }
 }
