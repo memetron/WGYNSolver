@@ -20,6 +20,7 @@ public class Main {
                 (Integer.parseInt(s) % 1000 - Integer.parseInt(s) % 100) / 100,
                 (Integer.parseInt(s) - Integer.parseInt(s) % 1000) / 1000};
         WGYNSet w = new WGYNSet(set);
+        w.generate(true);
         w.printPossible();
 
 

@@ -10,6 +10,11 @@ class Solution implements Comparable<Solution> {
         this.format = format;
     }
 
+    Solution(Solution s) {
+        this.n = s.value();
+        this.format = s.getFormat();
+    }
+
     @Override
     public String toString() {
         return (format);
@@ -45,5 +50,36 @@ class Solution implements Comparable<Solution> {
     public int compareTo(Solution s) {
         if (equals(s)) return 0;
         return (this.value() > s.value()) ? 1 : -1;
+    }
+
+    static Solution add(Solution a, Solution b) {
+        return new Solution(a.value() + b.value(), "(" + a.format + "+" + b.format + ")");
+    }
+
+    static Solution subtract(Solution a, Solution b) {
+        return new Solution(a.value() - b.value(), "(" + a.format + "-" + b.format + ")");
+    }
+
+    static Solution multiply(Solution a, Solution b) {
+        return new Solution(a.value() * b.value(), "(" + a.format + "*" + b.format + ")");
+    }
+
+    static Solution exponentiation(Solution a, Solution b) {
+        return (b.value() > 0 && b.value() < 10) ?
+                new Solution((int) Math.pow(a.value(), b.value()), "(" + a.format + "^" + b.format + ")") :
+                null;
+    }
+
+    static Solution division(Solution a, Solution b) {
+        if (b.value() == 0) return null;
+        return (a.value() % b.value() == 0) ?
+                new Solution(a.value() / b.value(), "(" + a.format + "/" + b.format + ")") :
+                null;
+    }
+
+    static Solution log(Solution a, Solution b) {
+        if (a.value() < 2 || b.value() < 1) return null;
+        double l = (Math.log(b.value()) / Math.log(a.value()));
+        return (Math.floor(l) == l) ? new Solution((int) l, "(Log_" + a.format + " " + b.format + ")") : null;
     }
 }
