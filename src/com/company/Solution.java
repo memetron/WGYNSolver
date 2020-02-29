@@ -53,13 +53,22 @@ class Solution implements Comparable<Solution> {
     }
 
     static Solution multiply(Solution a, Solution b) {
+        if (a.value() > 5000 || a.value() < -5000 || b.value() > 500 || b.value() < -500) return null;
+
         return new Solution(a.value() * b.value(), "(" + a.format + "*" + b.format + ")");
     }
 
     static Solution exponentiation(Solution a, Solution b) {
-        return (b.value() > 0 && b.value() < 10) ?
-                new Solution((int) Math.pow(a.value(), b.value()), "(" + a.format + "^" + b.format + ")") :
-                null;
+        if (b.value() > 0 && b.value() < 10 && a.value() < 4)
+        return new Solution((int) Math.pow(a.value(), b.value()), "(" + a.format + "^" + b.format + ")");
+        if (b.value() > 0 && b.value() < 6 && a.value() < 6)
+            return new Solution((int) Math.pow(a.value(), b.value()), "(" + a.format + "^" + b.format + ")");
+        if (b.value() > 0 && b.value() < 4 && a.value() < 20)
+            return new Solution((int) Math.pow(a.value(), b.value()), "(" + a.format + "^" + b.format + ")");
+        if (b.value() > 0 && b.value() < 3 && a.value() < 1000)
+            return new Solution((int) Math.pow(a.value(), b.value()), "(" + a.format + "^" + b.format + ")");
+        return null;
+
     }
 
     static Solution division(Solution a, Solution b) {
@@ -76,12 +85,12 @@ class Solution implements Comparable<Solution> {
     }
 
     static Solution factorial(Solution a) {
-        if (a.value()!=0 && a.value()<3 && a.value() < 8) return null;
-        if (a.value()==0) return new Solution(1,a.format+"!");
+        if ((a.value() != 0 && a.value() < 3) || a.value() > 10) return null;
+        if (a.value() == 0) return new Solution(1, a.format + "!");
         int n = 1;
-        for (int i = 2; i<=a.value(); i++) {
-            n*=i;
+        for (int i = 2; i <= a.value(); i++) {
+            n *= i;
         }
-        return new Solution(n,a.format+"!");
+        return new Solution(n, a.format + "!");
     }
 }

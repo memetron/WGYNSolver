@@ -117,7 +117,7 @@ class WGYNSubset {
                     (set[i].getFormat().length() < 2 || !this.set[i].getFormat().substring(set[i].getFormat().length() - 1).equals("!"))) {
                 Solution[] newSubset = cloneSolutionArray(set);
                 newSubset[i] = Solution.factorial(newSubset[i]);
-                appendSet(new WGYNSubset(newSubset, false));
+                if (newSubset[i] !=null) appendSet(new WGYNSubset(newSubset, false));
             }
             if (set[i].value()==3) {
                 Solution[] newSubset = cloneSolutionArray(set);
@@ -191,7 +191,7 @@ class WGYNSubset {
     private static Solution[] cloneSolutionArray(Solution[] arr) {
         Solution[] clone = new Solution[arr.length];
         Stream.iterate(0, n -> n + 1).limit(arr.length).forEach(n ->
-                clone[n] = (n == null) ? null : new Solution(arr[n]));
+                clone[n] = (arr[n] == null) ? null : new Solution(arr[n]));
         return clone;
     }
 
