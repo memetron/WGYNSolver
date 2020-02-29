@@ -76,27 +76,28 @@ class WGYNSubset {
             generateMultistepDenominatorSubsets();
         }
     }
+
     private void generateMultistepDenominatorSubsets() {
-        int[][] permutations = new int[][] {
-                {0,1,2,3},{0,1,3,2},{0,2,1,3},{0,2,3,1},{0,3,1,2},{0,3,2,1},
-                {1,0,2,3},{1,0,3,2},{1,2,0,3},{1,2,3,0},{1,3,0,2},{1,3,2,0},
-                {2,1,0,3},{2,1,3,0},{2,0,1,3},{2,0,3,1},{2,3,1,0},{2,3,0,1},
-                {3,1,2,0},{3,1,0,2},{3,2,1,0},{3,2,3,0},{3,0,1,2},{3,0,2,1}
+        int[][] permutations = new int[][]{
+                {0, 1, 2, 3}, {0, 1, 3, 2}, {0, 2, 1, 3}, {0, 2, 3, 1}, {0, 3, 1, 2}, {0, 3, 2, 1},
+                {1, 0, 2, 3}, {1, 0, 3, 2}, {1, 2, 0, 3}, {1, 2, 3, 0}, {1, 3, 0, 2}, {1, 3, 2, 0},
+                {2, 1, 0, 3}, {2, 1, 3, 0}, {2, 0, 1, 3}, {2, 0, 3, 1}, {2, 3, 1, 0}, {2, 3, 0, 1},
+                {3, 1, 2, 0}, {3, 1, 0, 2}, {3, 2, 1, 0}, {3, 2, 3, 0}, {3, 0, 1, 2}, {3, 0, 2, 1}
         };
         for (int[] permutation : permutations) {
             Solution a = set[permutation[0]];
             Solution b = set[permutation[1]];
             Solution c = set[permutation[2]];
             Solution d = set[permutation[3]];
-            Solution multstepDenoninatorPlus = Solution.multistepDenominatorDivision(a,b,c,d,true);
+            Solution multstepDenoninatorPlus = Solution.multistepDenominatorDivision(a, b, c, d, true);
             if (multstepDenoninatorPlus != null) {
-                Solution[] newSubset = new Solution[] {multstepDenoninatorPlus};
-                appendSet(new WGYNSubset(newSubset,false));
+                Solution[] newSubset = new Solution[]{multstepDenoninatorPlus};
+                appendSet(new WGYNSubset(newSubset, false));
             }
-            Solution multstepDenoninatorMinus = Solution.multistepDenominatorDivision(a,b,c,d,false);
+            Solution multstepDenoninatorMinus = Solution.multistepDenominatorDivision(a, b, c, d, false);
             if (multstepDenoninatorMinus != null) {
-                Solution[] newSubset = new Solution[] {multstepDenoninatorMinus};
-                appendSet(new WGYNSubset(newSubset,false));
+                Solution[] newSubset = new Solution[]{multstepDenoninatorMinus};
+                appendSet(new WGYNSubset(newSubset, false));
             }
         }
     }
@@ -205,8 +206,10 @@ class WGYNSubset {
                 Solution.multiply(a, b),
                 Solution.division(a, b),
                 Solution.exponentiation(a, b),
-                Solution.log(a, b)
+                Solution.log(a, b),
+                Solution.factorialRangeDivision(a, b)
         };
+
         //Creates a new array of solutions where null values are stripped.
         int count = 0;
         for (Solution s : operationList) {

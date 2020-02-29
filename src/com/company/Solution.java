@@ -117,7 +117,22 @@ class Solution implements Comparable<Solution> {
         if (numerator % denominator != 0) return null;
         Solution s = new Solution(numerator / denominator, "(" + a.format + "/(" +
                 b.format + (plusOrMinus ? "+" : "-") + "(" + c.format + "/" + d.format + ")))");
-        System.out.println(s);
         return s;
+    }
+
+    static Solution factorialRangeDivision(Solution a, Solution b) {
+
+        if (b.value() > a.value()) return null;
+        if (a.value() <= 10 && b.value() <= 10) return null; //this case would be covered by normal factorials
+        if (a.value() == b.value()) return null;
+
+        if (Math.abs(a.value())>50 || Math.abs(b.value())>50) return null; //Limits size of operation
+        if (Math.abs(a.value()-b.value()) > 5) return null;
+        int n = 1;
+        for (int i = b.value()+1; i <= a.value(); i++) {
+            n *= i;
+        }
+
+        return new Solution(n, "(" + a.format + "!/" + b.format + "!)");
     }
 }
