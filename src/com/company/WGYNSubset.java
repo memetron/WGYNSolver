@@ -1,6 +1,7 @@
 package com.company;
 
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.stream.Stream;
 
 class WGYNSubset {
@@ -171,7 +172,7 @@ class WGYNSubset {
             }
             if (set[i].value() == 3) {
                 Solution[] newSubset = cloneSolutionArray(set);
-                newSubset[i] = Solution.factorial(Solution.factorial(newSubset[i]));
+                newSubset[i] = Solution.factorial(Objects.requireNonNull(Solution.factorial(newSubset[i])));
                 appendSet(new WGYNSubset(newSubset, false));
             }
         }
@@ -297,9 +298,10 @@ class WGYNSubset {
         solutions[n - 1].printSolutions(20);
     }
 
-    //    private void printSubsets() { //Useful for debug purposes
+//    private void printSubsets() {
 //        for (WGYNSubset ss : subSets) if (ss != null) System.out.println(ss);
 //    }
+
     public static void main(String[] args) {
         int[] set = new int[]{1, 2, 3, 4};
         WGYNSubset ss = new WGYNSubset(set, false);

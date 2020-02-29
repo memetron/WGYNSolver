@@ -48,7 +48,6 @@ class SolutionSet {
         }
     }
 
-
     private int[] uniqueRandom(int range, int n) {
         int[] rand = new int[n];
         ArrayList<Integer> list = new ArrayList<>();

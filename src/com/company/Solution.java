@@ -115,9 +115,8 @@ class Solution implements Comparable<Solution> {
                 b.value() * d.value() - c.value();
         if (denominator < 1) return null;
         if (numerator % denominator != 0) return null;
-        Solution s = new Solution(numerator / denominator, "(" + a.format + "/(" +
+        return new Solution(numerator / denominator, "(" + a.format + "/(" +
                 b.format + (plusOrMinus ? "+" : "-") + "(" + c.format + "/" + d.format + ")))");
-        return s;
     }
 
     static Solution factorialRangeDivision(Solution a, Solution b) {
@@ -126,10 +125,10 @@ class Solution implements Comparable<Solution> {
         if (a.value() <= 10 && b.value() <= 10) return null; //this case would be covered by normal factorials
         if (a.value() == b.value()) return null;
 
-        if (Math.abs(a.value())>50 || Math.abs(b.value())>50) return null; //Limits size of operation
-        if (Math.abs(a.value()-b.value()) > 5) return null;
+        if (Math.abs(a.value()) > 50 || Math.abs(b.value()) > 50) return null; //Limits size of operation
+        if (Math.abs(a.value() - b.value()) > 5) return null;
         int n = 1;
-        for (int i = b.value()+1; i <= a.value(); i++) {
+        for (int i = b.value() + 1; i <= a.value(); i++) {
             n *= i;
         }
 
