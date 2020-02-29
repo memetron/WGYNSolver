@@ -1,5 +1,7 @@
 package com.company;
 
+import sun.java2d.pipe.SolidTextRenderer;
+
 import java.util.Arrays;
 import java.util.stream.Stream;
 
@@ -27,6 +29,23 @@ class WGYNSubset {
         Arrays.sort(this.set);
     }
 
+    private void solve() {
+        if (set.length == 1) {
+            if (set[0].value() > 0 && set[0].value() <= 100) {
+                this.solutions[set[0].value() - 1].append(new Solution(this.set[0].value(), this.set[0].getFormat()));
+            }
+        } else {
+            for (int i = 0; i < numSubsets; i++) {
+                WGYNSubset s = subSets[i];
+                for (SolutionSet sol : s.solutions) {
+                    if (sol.getNumSolutions() != 0 && sol.value() > 0 && sol.value() <= 100) {
+                        solutions[sol.value() - 1].merge(sol);
+                    }
+                }
+            }
+        }
+    }
+
     void generate(boolean canConcat) {
         generateSubsets(canConcat);
         solve();
@@ -52,21 +71,36 @@ class WGYNSubset {
             Solution[] finalStepFactorialSet = new Solution[]{Solution.factorial(set[0])};
             appendSet(new WGYNSubset(finalStepFactorialSet, false));
         }
+        if (set.length >= 3) {
+            generateFractionalExponentSubsets();
+        }
 
     }
 
-    private void solve() {
-        if (set.length == 1) {
-            if (set[0].value() > 0 && set[0].value() <= 100) {
-                this.solutions[set[0].value() - 1].append(new Solution(this.set[0].value(), this.set[0].getFormat()));
+    private void generateFractionalExponentSubsets() {
+        int[][] permutations = new int[][] {{0,1,2},{0,2,1},{1,0,2},{1,2,0},{2,0,1},{2,1,0}};
+        if (set.length==4) {
+            for (int i = 0; i < set.length; i++) {
+                for (int[] permutation : permutations) {
+                    int a = permutation[0]>=i?permutation[0]+1:permutation[0];
+                    int b = permutation[1]>=i?permutation[1]+1:permutation[1];
+                    int c = permutation[2]>=i?permutation[2]+1:permutation[2];
+                    Solution fractionalExponent = Solution.fractionalExponent(set[a],set[b],set[c]);
+                    if (fractionalExponent != null) {
+                        Solution[] newSet = new Solution[] {fractionalExponent, new Solution(set[i])};
+                        appendSet(new WGYNSubset(newSet,false));
+                    }
+                }
             }
         } else {
-            for (int i = 0; i < numSubsets; i++) {
-                WGYNSubset s = subSets[i];
-                for (SolutionSet sol : s.solutions) {
-                    if (sol.getNumSolutions() != 0 && sol.value() > 0 && sol.value() <= 100) {
-                        solutions[sol.value() - 1].merge(sol);
-                    }
+            for (int[] permutation : permutations) {
+                int a = permutation[0];
+                int b = permutation[1];
+                int c = permutation[2];
+                Solution fractionalExponent = Solution.fractionalExponent(set[a], set[b], set[c]);
+                if (fractionalExponent != null) {
+                    Solution[] newSet = new Solution[] {fractionalExponent};
+                    appendSet(new WGYNSubset(newSet,false));
                 }
             }
         }
@@ -102,24 +136,15 @@ class WGYNSubset {
         }
     }
 
-    private boolean containsSubset(WGYNSubset s) {
-        for (WGYNSubset ss : subSets) {
-            if (ss != null && ss.equals(s)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     private void generateFactorialSubsets() {
         for (int i = 0; i < set.length; i++) {
             if (((set[i].value() > 2 && set[i].value() < 10) || (set[i].value() == 0)) &&
                     (set[i].getFormat().length() < 2 || !this.set[i].getFormat().substring(set[i].getFormat().length() - 1).equals("!"))) {
                 Solution[] newSubset = cloneSolutionArray(set);
                 newSubset[i] = Solution.factorial(newSubset[i]);
-                if (newSubset[i] !=null) appendSet(new WGYNSubset(newSubset, false));
+                if (newSubset[i] != null) appendSet(new WGYNSubset(newSubset, false));
             }
-            if (set[i].value()==3) {
+            if (set[i].value() == 3) {
                 Solution[] newSubset = cloneSolutionArray(set);
                 newSubset[i] = Solution.factorial(Solution.factorial(newSubset[i]));
                 appendSet(new WGYNSubset(newSubset, false));
@@ -176,18 +201,6 @@ class WGYNSubset {
         return operations;
     }
 
-    private void appendSet(WGYNSubset s) {
-        if (containsSubset(s)) return;
-        s.generate(s.canConcat);
-        numSubsets++;
-        if (numSubsets >= subSets.length) {
-            WGYNSubset[] clone = new WGYNSubset[subSets.length * 2];
-            System.arraycopy(subSets, 0, clone, 0, subSets.length);
-            subSets = clone;
-        }
-        subSets[numSubsets - 1] = s;
-    }
-
     private static Solution[] cloneSolutionArray(Solution[] arr) {
         Solution[] clone = new Solution[arr.length];
         Stream.iterate(0, n -> n + 1).limit(arr.length).forEach(n ->
@@ -212,6 +225,26 @@ class WGYNSubset {
         return true;
     }
 
+    private boolean containsSubset(WGYNSubset s) {
+        for (WGYNSubset ss : subSets) {
+            if (ss != null && ss.equals(s)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void appendSet(WGYNSubset s) {
+        if (containsSubset(s)) return;
+        s.generate(s.canConcat);
+        numSubsets++;
+        if (numSubsets >= subSets.length) {
+            WGYNSubset[] clone = new WGYNSubset[subSets.length * 2];
+            System.arraycopy(subSets, 0, clone, 0, subSets.length);
+            subSets = clone;
+        }
+        subSets[numSubsets - 1] = s;
+    }
 
     @Override
     public String toString() {
@@ -237,8 +270,13 @@ class WGYNSubset {
         solutions[n - 1].printSolutions(20);
     }
 
-//    private void printSubsets() { //Useful for debug purposes
+    //    private void printSubsets() { //Useful for debug purposes
 //        for (WGYNSubset ss : subSets) if (ss != null) System.out.println(ss);
 //    }
+    public static void main(String[] args) {
+        int[] set = new int[] {1,2,3,4};
+        WGYNSubset ss = new WGYNSubset(set, false);
+        ss.generateFractionalExponentSubsets();
+    }
 
 }

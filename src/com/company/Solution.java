@@ -60,7 +60,7 @@ class Solution implements Comparable<Solution> {
 
     static Solution exponentiation(Solution a, Solution b) {
         if (b.value() > 0 && b.value() < 10 && a.value() < 4)
-        return new Solution((int) Math.pow(a.value(), b.value()), "(" + a.format + "^" + b.format + ")");
+            return new Solution((int) Math.pow(a.value(), b.value()), "(" + a.format + "^" + b.format + ")");
         if (b.value() > 0 && b.value() < 6 && a.value() < 6)
             return new Solution((int) Math.pow(a.value(), b.value()), "(" + a.format + "^" + b.format + ")");
         if (b.value() > 0 && b.value() < 4 && a.value() < 20)
@@ -92,5 +92,15 @@ class Solution implements Comparable<Solution> {
             n *= i;
         }
         return new Solution(n, a.format + "!");
+    }
+
+    static Solution fractionalExponent(Solution a, Solution b, Solution c) {
+        if (c.value() < 2 || c.value() > 3) return null;
+        if (b.value() > 5 || b.value() < 1) return null;
+        if (a.value() < 3) return null;
+        if (b.value() % c.value() == 0) return null;
+        double pow = Math.pow(a.value(), ((double) b.value()) / ((double) c.value()));
+        if (Math.min(Math.abs(Math.floor(pow) - pow), Math.abs(Math.ceil(pow) - pow)) > 0.00000000002) return null;
+        return new Solution((int) pow, String.format("(" + a.format + "^(" + b.format + "/" + c.format + ")"));
     }
 }
