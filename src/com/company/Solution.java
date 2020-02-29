@@ -28,14 +28,6 @@ class Solution implements Comparable<Solution> {
         return format;
     }
 
-    void setFormat(String format) {
-        this.format = format;
-    }
-
-    void setValue(int value) {
-        this.n = value;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (o == this) return true;
@@ -81,5 +73,15 @@ class Solution implements Comparable<Solution> {
         if (a.value() < 2 || b.value() < 1) return null;
         double l = (Math.log(b.value()) / Math.log(a.value()));
         return (Math.floor(l) == l) ? new Solution((int) l, "(Log_" + a.format + " " + b.format + ")") : null;
+    }
+
+    static Solution factorial(Solution a) {
+        if (a.value()!=0 && a.value()<3 && a.value() < 8) return null;
+        if (a.value()==0) return new Solution(1,a.format+"!");
+        int n = 1;
+        for (int i = 2; i<=a.value(); i++) {
+            n*=i;
+        }
+        return new Solution(n,a.format+"!");
     }
 }
