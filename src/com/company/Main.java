@@ -26,9 +26,9 @@ public class Main {
         while (true) {
             System.out.println("Input a number to see solutions! Or -1 To Quit");
             s = in.nextLine();
-            if (!(isInt(s) && Integer.parseInt(s) > 0 && Integer.parseInt(s) <= 100 || Integer.parseInt(s) == -1))
+            if (!isInt(s) || !(Integer.parseInt(s) > 0 && Integer.parseInt(s) <= 100 || Integer.parseInt(s) == -1)) {
                 System.out.println("Please Enter A valid Number (From 1 To 100).");
-            else {
+            } else {
                 n = Integer.parseInt(s);
                 if (n == -1) break;
                 w.printSolutions(n);

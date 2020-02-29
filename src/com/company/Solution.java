@@ -106,14 +106,17 @@ class Solution implements Comparable<Solution> {
 
     static Solution multistepDenominatorDivision(Solution a, Solution b, Solution c, Solution d, boolean plusOrMinus) {
         //Method for division in the form a/(b+/-(c/d)) true plusOrMinus indicates addition within the denominator
-        if (c.value() % d.value() == 0) return null; //This case would be covered with normal division, so it would be pointless to do again
+        if (a.value() == 0 || b.value() == 0 || c.value() == 0 || d.value() == 0) return null;
+        if (c.value() % d.value() == 0)
+            return null; //This case would be covered with normal division, so it would be pointless to do again
         int numerator = a.value() * d.value();
         int denominator = plusOrMinus ?
                 b.value() * d.value() + c.value() :
                 b.value() * d.value() - c.value();
+        if (denominator < 1) return null;
         if (numerator % denominator != 0) return null;
-        Solution s = new Solution(numerator/denominator, "("+a.format+"/("+
-                b.format+(plusOrMinus?"+":"-")+"("+c.format+"/"+d.format+"))");
+        Solution s = new Solution(numerator / denominator, "(" + a.format + "/(" +
+                b.format + (plusOrMinus ? "+" : "-") + "(" + c.format + "/" + d.format + ")))");
         System.out.println(s);
         return s;
     }
