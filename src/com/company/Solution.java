@@ -101,6 +101,20 @@ class Solution implements Comparable<Solution> {
         if (b.value() % c.value() == 0) return null;
         double pow = Math.pow(a.value(), ((double) b.value()) / ((double) c.value()));
         if (Math.min(Math.abs(Math.floor(pow) - pow), Math.abs(Math.ceil(pow) - pow)) > 0.00000000002) return null;
-        return new Solution((int) pow, String.format("(" + a.format + "^(" + b.format + "/" + c.format + ")"));
+        return new Solution((int) pow, "(" + a.format + "^(" + b.format + "/" + c.format + ")");
+    }
+
+    static Solution multistepDenominatorDivision(Solution a, Solution b, Solution c, Solution d, boolean plusOrMinus) {
+        //Method for division in the form a/(b+/-(c/d)) true plusOrMinus indicates addition within the denominator
+        if (c.value() % d.value() == 0) return null; //This case would be covered with normal division, so it would be pointless to do again
+        int numerator = a.value() * d.value();
+        int denominator = plusOrMinus ?
+                b.value() * d.value() + c.value() :
+                b.value() * d.value() - c.value();
+        if (numerator % denominator != 0) return null;
+        Solution s = new Solution(numerator/denominator, "("+a.format+"/("+
+                b.format+(plusOrMinus?"+":"-")+"("+c.format+"/"+d.format+"))");
+        System.out.println(s);
+        return s;
     }
 }

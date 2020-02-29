@@ -74,21 +74,47 @@ class WGYNSubset {
         if (set.length >= 3) {
             generateFractionalExponentSubsets();
         }
-
+        if (set.length == 4) {
+            generateMultistepDenominatorSubsets();
+        }
+    }
+    private void generateMultistepDenominatorSubsets() {
+        int[][] permutations = new int[][] {
+                {0,1,2,3},{0,1,3,2},{0,2,1,3},{0,2,3,1},{0,3,1,2},{0,3,2,1},
+                {1,0,2,3},{1,0,3,2},{1,2,0,3},{1,2,3,0},{1,3,0,2},{1,3,2,0},
+                {2,1,0,3},{2,1,3,0},{2,0,1,3},{2,0,3,1},{2,3,1,0},{2,3,0,1},
+                {3,1,2,0},{3,1,0,2},{3,2,1,0},{3,2,3,0},{3,0,1,2},{3,0,2,1}
+        };
+        for (int[] permutation : permutations) {
+            Solution a = set[permutation[0]];
+            Solution b = set[permutation[1]];
+            Solution c = set[permutation[2]];
+            Solution d = set[permutation[3]];
+            Solution multstepDenoninatorPlus = Solution.multistepDenominatorDivision(a,b,c,d,true);
+            if (multstepDenoninatorPlus != null) {
+                Solution[] newSubset = new Solution[] {multstepDenoninatorPlus};
+                appendSet(new WGYNSubset(newSubset,false));
+            }
+            Solution multstepDenoninatorMinus = Solution.multistepDenominatorDivision(a,b,c,d,false);
+            if (multstepDenoninatorMinus != null) {
+                Solution[] newSubset = new Solution[] {multstepDenoninatorMinus};
+                appendSet(new WGYNSubset(newSubset,false));
+            }
+        }
     }
 
     private void generateFractionalExponentSubsets() {
-        int[][] permutations = new int[][] {{0,1,2},{0,2,1},{1,0,2},{1,2,0},{2,0,1},{2,1,0}};
-        if (set.length==4) {
+        int[][] permutations = new int[][]{{0, 1, 2}, {0, 2, 1}, {1, 0, 2}, {1, 2, 0}, {2, 0, 1}, {2, 1, 0}};
+        if (set.length == 4) {
             for (int i = 0; i < set.length; i++) {
                 for (int[] permutation : permutations) {
-                    int a = permutation[0]>=i?permutation[0]+1:permutation[0];
-                    int b = permutation[1]>=i?permutation[1]+1:permutation[1];
-                    int c = permutation[2]>=i?permutation[2]+1:permutation[2];
-                    Solution fractionalExponent = Solution.fractionalExponent(set[a],set[b],set[c]);
+                    int a = permutation[0] >= i ? permutation[0] + 1 : permutation[0];
+                    int b = permutation[1] >= i ? permutation[1] + 1 : permutation[1];
+                    int c = permutation[2] >= i ? permutation[2] + 1 : permutation[2];
+                    Solution fractionalExponent = Solution.fractionalExponent(set[a], set[b], set[c]);
                     if (fractionalExponent != null) {
-                        Solution[] newSet = new Solution[] {fractionalExponent, new Solution(set[i])};
-                        appendSet(new WGYNSubset(newSet,false));
+                        Solution[] newSet = new Solution[]{fractionalExponent, new Solution(set[i])};
+                        appendSet(new WGYNSubset(newSet, false));
                     }
                 }
             }
@@ -99,8 +125,8 @@ class WGYNSubset {
                 int c = permutation[2];
                 Solution fractionalExponent = Solution.fractionalExponent(set[a], set[b], set[c]);
                 if (fractionalExponent != null) {
-                    Solution[] newSet = new Solution[] {fractionalExponent};
-                    appendSet(new WGYNSubset(newSet,false));
+                    Solution[] newSet = new Solution[]{fractionalExponent};
+                    appendSet(new WGYNSubset(newSet, false));
                 }
             }
         }
@@ -274,7 +300,7 @@ class WGYNSubset {
 //        for (WGYNSubset ss : subSets) if (ss != null) System.out.println(ss);
 //    }
     public static void main(String[] args) {
-        int[] set = new int[] {1,2,3,4};
+        int[] set = new int[]{1, 2, 3, 4};
         WGYNSubset ss = new WGYNSubset(set, false);
         ss.generateFractionalExponentSubsets();
     }
