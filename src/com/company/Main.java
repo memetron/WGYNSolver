@@ -1,5 +1,5 @@
 package com.company;
-
+// Important comment
 import java.util.Scanner;
 
 public class Main {
